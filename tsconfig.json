@@ -20,9 +20,5 @@
     "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true
   },
-  "exclude": ["node_modules", "dist"],
-  "typedocOptions": {
-    "entryPoints": ["index.ts"],
-    "out": "docs"
-  }
+  "exclude": ["node_modules"]
 }
