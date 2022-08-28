@@ -28,5 +28,5 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
-  "repository": "https://github.com/d4lton/pixoo-client"
+  "repository": "https://github.com/d4lton/pixoo-client.git"
 }
