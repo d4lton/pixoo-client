@@ -20,6 +20,9 @@ export class Pixoo {
 
   protected static _devices?: any[];
 
+  /**
+   * Initialize the Pixoo module.
+   */
   static async start(): Promise<void> {
     Pixoo._devices = (await Pixoo.request(Pixoo.LAN_DEVICES_URL, "GET")).DeviceList;
   }
@@ -47,29 +50,59 @@ export class Pixoo {
       });
   }
 
-  static async GetAllConf(id: string): Promise<any> {
+  private static getDeviceById(id: string): any {
     const device = Pixoo.devices.find(it => it.DeviceName === id);
     if (!device) { throw new Error(`device ${id} not found`); }
+    return device;
+  }
+
+  /**
+   * Get all configuration settings.
+   */
+  static async GetAllConf(id: string): Promise<any> {
+    const device = Pixoo.getDeviceById(id);
     return await Pixoo.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Channel/GetAllConf"});
   }
 
+  /**
+   * Select channel index.
+   */
   static async SetIndex(id: string, channel: PixooChannel): Promise<void> {
-    const device = Pixoo.devices.find(it => it.DeviceName === id);
-    if (!device) { throw new Error(`device ${id} not found`); }
+    const device = Pixoo.getDeviceById(id);
     await Pixoo.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Channel/SetIndex", SelectIndex: channel});
   }
 
+  /**
+   * Get current channel index.
+   */
   static async GetIndex(id: string): Promise<PixooChannel> {
-    const device = Pixoo.devices.find(it => it.DeviceName === id);
-    if (!device) { throw new Error(`device ${id} not found`); }
+    const device = Pixoo.getDeviceById(id);
     const response = await Pixoo.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Channel/GetIndex"});
     return response?.SelectIndex;
   }
 
+  /**
+   * Set device brightness.
+   */
   static async SetBrightness(id: string, brightness: number): Promise<void> {
-    const device = Pixoo.devices.find(it => it.DeviceName === id);
-    if (!device) { throw new Error(`device ${id} not found`); }
+    const device = Pixoo.getDeviceById(id);
     await Pixoo.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Channel/SetBrightness", Brightness: brightness});
+  }
+
+  /**
+   * Set the latitude and longitude to get weather information.
+   */
+  static async SetLogAndLat(id: string, latitude: string, longitude: string): Promise<void> {
+    const device = Pixoo.getDeviceById(id);
+    await Pixoo.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Sys/LogAndLat", Longitude: longitude, Latitude: latitude});
+  }
+
+  /**
+   * Set the timezone. Example: "GMT-5"
+   */
+  static async SetTimeZone(id: string, timezone: string): Promise<void> {
+    const device = Pixoo.getDeviceById(id);
+    await Pixoo.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Sys/TimeZone", TimeZoneValue: timezone});
   }
 
   static get devices(): any[] {
