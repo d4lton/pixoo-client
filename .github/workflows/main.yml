@@ -7,7 +7,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     env:
-      DBS_GITHUB_PUBLISH_AUTH_TOKEN: ${{ secrets.DBS_GITHUB_PUBLISH_AUTH_TOKEN }}
+      D4LTON_GITHUB_AUTH_TOKEN: ${{ secrets.D4LTON_GITHUB_AUTH_TOKEN }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
