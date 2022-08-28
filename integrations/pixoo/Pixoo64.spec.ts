@@ -2,7 +2,7 @@
  * Copyright ©2022 Dana Basken
  */
 
-import {Pixoo64} from "../../src";
+import {Pixoo64} from "../../src/pixoo/Pixoo64";
 
 describe("Pixoo64", function() {
 
