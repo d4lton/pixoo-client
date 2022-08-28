@@ -4,7 +4,9 @@
 
 import fetch from "node-fetch";
 
-export enum Pixoo64Channel {
+// http://doc.divoom-gz.com/web/#/12?page_id=240
+
+export enum PixooChannel {
   FACES = 0,
   CLOUD = 1,
   VISUALIZER = 2,
@@ -12,16 +14,14 @@ export enum Pixoo64Channel {
   BLACK_SCREEN = 4
 }
 
-// http://doc.divoom-gz.com/web/#/12?page_id=240
-
-export class Pixoo64 {
+export class Pixoo {
 
   private static LAN_DEVICES_URL = "https://app.divoom-gz.com/Device/ReturnSameLANDevice";
 
-  private static _devices?: any[];
+  protected static _devices?: any[];
 
   static async start(): Promise<void> {
-    Pixoo64._devices = (await Pixoo64.request(Pixoo64.LAN_DEVICES_URL, "GET")).DeviceList;
+    Pixoo._devices = (await Pixoo.request(Pixoo.LAN_DEVICES_URL, "GET")).DeviceList;
   }
 
   private static async getStandardOptions(method: string, body?: any): Promise<any> {
@@ -35,7 +35,7 @@ export class Pixoo64 {
     };
   }
 
-  private static async request(url: string, method: string, body?: any): Promise<any> {
+  protected static async request(url: string, method: string, body?: any): Promise<any> {
     const options = await this.getStandardOptions(method, body);
     return fetch(url, options)
       .then(async (response: any) => {
@@ -48,28 +48,28 @@ export class Pixoo64 {
   }
 
   static async GetAllConf(id: string): Promise<any> {
-    const device = Pixoo64.devices.find(it => it.DeviceName === id);
+    const device = Pixoo.devices.find(it => it.DeviceName === id);
     if (!device) { throw new Error(`device ${id} not found`); }
-    return await Pixoo64.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Channel/GetAllConf"});
+    return await Pixoo.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Channel/GetAllConf"});
   }
 
-  static async SetIndex(id: string, channel: Pixoo64Channel): Promise<void> {
-    const device = Pixoo64.devices.find(it => it.DeviceName === id);
+  static async SetIndex(id: string, channel: PixooChannel): Promise<void> {
+    const device = Pixoo.devices.find(it => it.DeviceName === id);
     if (!device) { throw new Error(`device ${id} not found`); }
-    await Pixoo64.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Channel/SetIndex", SelectIndex: channel});
+    await Pixoo.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Channel/SetIndex", SelectIndex: channel});
   }
 
-  static async GetIndex(id: string): Promise<Pixoo64Channel> {
-    const device = Pixoo64.devices.find(it => it.DeviceName === id);
+  static async GetIndex(id: string): Promise<PixooChannel> {
+    const device = Pixoo.devices.find(it => it.DeviceName === id);
     if (!device) { throw new Error(`device ${id} not found`); }
-    const response = await Pixoo64.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Channel/GetIndex"});
+    const response = await Pixoo.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Channel/GetIndex"});
     return response?.SelectIndex;
   }
 
   static async SetBrightness(id: string, brightness: number): Promise<void> {
-    const device = Pixoo64.devices.find(it => it.DeviceName === id);
+    const device = Pixoo.devices.find(it => it.DeviceName === id);
     if (!device) { throw new Error(`device ${id} not found`); }
-    await Pixoo64.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Channel/SetBrightness", Brightness: brightness});
+    await Pixoo.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Channel/SetBrightness", Brightness: brightness});
   }
 
   static get devices(): any[] {
