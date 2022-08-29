@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[pixoo/Pixoo.ts:14](https://github.com/d4lton/pixoo-client/blob/d8fa72f/src/pixoo/Pixoo.ts#L14)
+[pixoo/Pixoo.ts:14](https://github.com/d4lton/pixoo-client/blob/f5230c7/src/pixoo/Pixoo.ts#L14)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[pixoo/Pixoo.ts:11](https://github.com/d4lton/pixoo-client/blob/d8fa72f/src/pixoo/Pixoo.ts#L11)
+[pixoo/Pixoo.ts:11](https://github.com/d4lton/pixoo-client/blob/f5230c7/src/pixoo/Pixoo.ts#L11)
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-[pixoo/Pixoo.ts:13](https://github.com/d4lton/pixoo-client/blob/d8fa72f/src/pixoo/Pixoo.ts#L13)
+[pixoo/Pixoo.ts:13](https://github.com/d4lton/pixoo-client/blob/f5230c7/src/pixoo/Pixoo.ts#L13)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-[pixoo/Pixoo.ts:10](https://github.com/d4lton/pixoo-client/blob/d8fa72f/src/pixoo/Pixoo.ts#L10)
+[pixoo/Pixoo.ts:10](https://github.com/d4lton/pixoo-client/blob/f5230c7/src/pixoo/Pixoo.ts#L10)
 
 ___
 
@@ -60,4 +60,4 @@ ___
 
 #### Defined in
 
-[pixoo/Pixoo.ts:12](https://github.com/d4lton/pixoo-client/blob/d8fa72f/src/pixoo/Pixoo.ts#L12)
+[pixoo/Pixoo.ts:12](https://github.com/d4lton/pixoo-client/blob/f5230c7/src/pixoo/Pixoo.ts#L12)

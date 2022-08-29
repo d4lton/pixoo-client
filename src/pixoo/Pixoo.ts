@@ -16,9 +16,17 @@ export enum PixooChannel {
 
 export class Pixoo {
 
+  /** @hidden */
   private static LAN_DEVICES_URL = "https://app.divoom-gz.com/Device/ReturnSameLANDevice";
 
+  /** @hidden */
   protected static _devices?: any[];
+
+  /**
+   * @hidden
+   */
+  constructor() {
+  }
 
   /**
    * Initialize the Pixoo module.
@@ -27,6 +35,10 @@ export class Pixoo {
     Pixoo._devices = (await Pixoo.request(Pixoo.LAN_DEVICES_URL, "GET")).DeviceList;
   }
 
+  /**
+   * @private
+   * @hidden
+   */
   private static async getStandardOptions(method: string, body?: any): Promise<any> {
     if (body !== undefined) {
       body = typeof body === "string" ? body : JSON.stringify(body);
@@ -38,6 +50,10 @@ export class Pixoo {
     };
   }
 
+  /**
+   * @private
+   * @hidden
+   */
   protected static async request(url: string, method: string, body?: any): Promise<any> {
     const options = await this.getStandardOptions(method, body);
     return fetch(url, options)
@@ -59,23 +75,23 @@ export class Pixoo {
   /**
    * Get all configuration settings.
    */
-  static async GetAllConf(id: string): Promise<any> {
+  static async getConfiguration(id: string): Promise<any> {
     const device = Pixoo.getDeviceById(id);
     return await Pixoo.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Channel/GetAllConf"});
   }
 
   /**
-   * Select channel index.
+   * Select channel.
    */
-  static async SetIndex(id: string, channel: PixooChannel): Promise<void> {
+  static async setChannel(id: string, channel: PixooChannel): Promise<void> {
     const device = Pixoo.getDeviceById(id);
     await Pixoo.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Channel/SetIndex", SelectIndex: channel});
   }
 
   /**
-   * Get current channel index.
+   * Get current channel.
    */
-  static async GetIndex(id: string): Promise<PixooChannel> {
+  static async getChannel(id: string): Promise<PixooChannel> {
     const device = Pixoo.getDeviceById(id);
     const response = await Pixoo.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Channel/GetIndex"});
     return response?.SelectIndex;
@@ -84,7 +100,7 @@ export class Pixoo {
   /**
    * Set device brightness.
    */
-  static async SetBrightness(id: string, brightness: number): Promise<void> {
+  static async setBrightness(id: string, brightness: number): Promise<void> {
     const device = Pixoo.getDeviceById(id);
     await Pixoo.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Channel/SetBrightness", Brightness: brightness});
   }
@@ -92,7 +108,7 @@ export class Pixoo {
   /**
    * Set the latitude and longitude to get weather information.
    */
-  static async SetLogAndLat(id: string, latitude: string, longitude: string): Promise<void> {
+  static async setGeographicCoordinates(id: string, latitude: string, longitude: string): Promise<void> {
     const device = Pixoo.getDeviceById(id);
     await Pixoo.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Sys/LogAndLat", Longitude: longitude, Latitude: latitude});
   }
@@ -100,13 +116,25 @@ export class Pixoo {
   /**
    * Set the timezone. Example: "GMT-5"
    */
-  static async SetTimeZone(id: string, timezone: string): Promise<void> {
+  static async setTimezone(id: string, timezone: string): Promise<void> {
     const device = Pixoo.getDeviceById(id);
     await Pixoo.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Sys/TimeZone", TimeZoneValue: timezone});
   }
 
+  /**
+   * Set an array of display elements. Pixoo64 only.
+   * @see http://doc.divoom-gz.com/web/#/12?page_id=234
+   */
+  static async setItemList(id: string, items: any[]): Promise<void> {
+    const device = Pixoo.getDeviceById(id);
+    await Pixoo.request(`http://${device.DevicePrivateIP}/post`, "POST", {Command: "Sys/TimeZone", ItemList: items});
+  }
+
+  /**
+   * Return all discovered Pixoo devices.
+   */
   static get devices(): any[] {
-    return this._devices;
+    return this._devices || [];
   }
 
 }
